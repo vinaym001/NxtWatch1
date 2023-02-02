@@ -1,0 +1,15 @@
+.profile-logo {
+  width: 35px;
+  height: 35px;
+}
+.theme-logo {
+  width: 120px;
+}
+.icons-header {
+  font-size: 30px;
+}
+.icons-container {
+  display: flex;
+  justify-content: space-between;
+  width: 25%;
+}

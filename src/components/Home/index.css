@@ -1,0 +1,33 @@
+.link-text {
+  margin-left: 10px;
+  text-decoration: none;
+  font-family: 'roboto';
+}
+.icon-prop {
+  text-decoration: none;
+  color: #616e7c;
+}
+.active-link {
+  background-color: #616e7c;
+  font-weight: bold;
+}
+.active-icon {
+  color: red;
+}
+.contact-logo-container {
+  display: flex;
+  align-items: center;
+  font-family: 'roboto';
+  justify-content: space-evenly;
+  width: 50%;
+  align-self: flex-start;
+}
+.contact-logo {
+  width: 30px;
+}
+.con-hea {
+  font-size: 25px;
+}
+.con-par {
+  font-size: 20px;
+}
