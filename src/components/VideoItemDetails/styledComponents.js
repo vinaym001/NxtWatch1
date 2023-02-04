@@ -74,7 +74,7 @@ export const EmptyView = styled.div`
   align-items: center;
 `
 export const VideoThumbnail = styled.img`
-  height: 150px;
+  height: 300px;
   width: 280px;
   margin-right: 5px;
 `
@@ -98,4 +98,14 @@ export const LoaderContainer = styled.div`
 `
 export const VideoListContainer = styled.div`
   padding: 2px;
+`
+export const GamingLogoContainer = styled.p`
+  background-color: #f4f4f4;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  color: #231f20;
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
 `

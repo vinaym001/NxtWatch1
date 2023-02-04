@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {formatDistanceToNow} from 'date-fns'
 
 import Loader from 'react-loader-spinner'
-import {FaHome, FaFire, FaWindowClose, FaSearch} from 'react-icons/fa'
+import {FaHome, FaFire} from 'react-icons/fa'
 import {SiYoutubegaming} from 'react-icons/si'
 import {CgPlayListAdd} from 'react-icons/cg'
 import {
@@ -15,11 +15,7 @@ import {
   ContactDiv,
   VideoUL,
   VideoLI,
-  BannerContainer,
-  BannerButton,
   ContentDiv,
-  DisplayBannerRow,
-  IconButton,
   ViewContainer,
   EmptyView,
   VideoThumbnail,
@@ -28,6 +24,7 @@ import {
   VideoContentDetails,
   LoaderContainer,
   VideoListContainer,
+  TrendingLogoContainer,
 } from './styledComponents'
 
 import Header from '../Header'
@@ -66,11 +63,9 @@ const apiStatusConstant = {
   success: 'SUCCESS',
   fail: 'FAIL',
 }
-class Home extends Component {
+class Trending extends Component {
   state = {
     videosList: [],
-    showBanner: true,
-    searchInput: '',
     apiStatus: apiStatusConstant.initial,
   }
 
@@ -120,7 +115,6 @@ class Home extends Component {
 
   renderTrendingVideos = async () => {
     this.setState({apiStatus: apiStatusConstant.progress})
-    const {searchInput} = this.state
     const jwtToken = Cookies.get('jwt_token')
     const option = {
       headers: {
@@ -128,10 +122,7 @@ class Home extends Component {
       },
       method: 'GET',
     }
-    const response = await fetch(
-      `https://apis.ccbp.in/videos/all?search=${searchInput}`,
-      option,
-    )
+    const response = await fetch('https://apis.ccbp.in/videos/trending', option)
     const data = await response.json()
     const videosData = data.videos.map(eachItem => ({
       channel: eachItem.channel,
@@ -173,27 +164,6 @@ class Home extends Component {
       </EmptyView>
     )
   }
-
-  onCloseBanner = () => {
-    this.setState({showBanner: false})
-  }
-
-  renderBannerView = () => (
-    <BannerContainer>
-      <DisplayBannerRow>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-          alt="theme"
-          className="logo"
-        />
-        <IconButton type="button" onClick={this.onCloseBanner}>
-          <FaWindowClose />
-        </IconButton>
-      </DisplayBannerRow>
-      <p>Buy Nxt Watch Premium prepaid plans with UPI </p>
-      <BannerButton type="button">GET IT NOW</BannerButton>
-    </BannerContainer>
-  )
 
   renderEmptyView = () => {
     const onRetry = () => {
@@ -288,26 +258,15 @@ class Home extends Component {
   }
 
   render() {
-    const {showBanner} = this.state
     return (
       <div className="home-bg-container">
         <Header />
         <ContentDiv>
           {this.renderSideBar()}
           <ViewContainer>
-            {showBanner && this.renderBannerView()}
-            <div className="search-div">
-              <input
-                type="text"
-                className="input-search"
-                placeholder="Search"
-                onChange={this.onSearchInput}
-              />
-              <FaSearch
-                className="search-icon"
-                onClick={this.onClickSearchIcon}
-              />
-            </div>
+            <TrendingLogoContainer>
+              <FaFire className="fire-icon" /> Trending
+            </TrendingLogoContainer>
             {this.renderApiData()}
           </ViewContainer>
         </ContentDiv>
@@ -316,4 +275,4 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default Trending

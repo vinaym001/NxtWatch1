@@ -2,10 +2,9 @@ import {Component} from 'react'
 import Cookies from 'js-cookie'
 
 import {Link} from 'react-router-dom'
-import {formatDistanceToNow} from 'date-fns'
 
 import Loader from 'react-loader-spinner'
-import {FaHome, FaFire, FaWindowClose, FaSearch} from 'react-icons/fa'
+import {FaHome, FaFire} from 'react-icons/fa'
 import {SiYoutubegaming} from 'react-icons/si'
 import {CgPlayListAdd} from 'react-icons/cg'
 import {
@@ -15,11 +14,7 @@ import {
   ContactDiv,
   VideoUL,
   VideoLI,
-  BannerContainer,
-  BannerButton,
   ContentDiv,
-  DisplayBannerRow,
-  IconButton,
   ViewContainer,
   EmptyView,
   VideoThumbnail,
@@ -28,6 +23,7 @@ import {
   VideoContentDetails,
   LoaderContainer,
   VideoListContainer,
+  GamingLogoContainer,
 } from './styledComponents'
 
 import Header from '../Header'
@@ -66,11 +62,9 @@ const apiStatusConstant = {
   success: 'SUCCESS',
   fail: 'FAIL',
 }
-class Home extends Component {
+class Gaming extends Component {
   state = {
     videosList: [],
-    showBanner: true,
-    searchInput: '',
     apiStatus: apiStatusConstant.initial,
   }
 
@@ -120,7 +114,6 @@ class Home extends Component {
 
   renderTrendingVideos = async () => {
     this.setState({apiStatus: apiStatusConstant.progress})
-    const {searchInput} = this.state
     const jwtToken = Cookies.get('jwt_token')
     const option = {
       headers: {
@@ -128,15 +121,11 @@ class Home extends Component {
       },
       method: 'GET',
     }
-    const response = await fetch(
-      `https://apis.ccbp.in/videos/all?search=${searchInput}`,
-      option,
-    )
+    const response = await fetch(`https://apis.ccbp.in/videos/gaming/`, option)
     const data = await response.json()
+    console.log(data)
     const videosData = data.videos.map(eachItem => ({
-      channel: eachItem.channel,
       id: eachItem.id,
-      publishedAt: eachItem.published_at,
       thumbnailUrl: eachItem.thumbnail_url,
       title: eachItem.title,
       viewCount: eachItem.view_count,
@@ -173,27 +162,6 @@ class Home extends Component {
       </EmptyView>
     )
   }
-
-  onCloseBanner = () => {
-    this.setState({showBanner: false})
-  }
-
-  renderBannerView = () => (
-    <BannerContainer>
-      <DisplayBannerRow>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-          alt="theme"
-          className="logo"
-        />
-        <IconButton type="button" onClick={this.onCloseBanner}>
-          <FaWindowClose />
-        </IconButton>
-      </DisplayBannerRow>
-      <p>Buy Nxt Watch Premium prepaid plans with UPI </p>
-      <BannerButton type="button">GET IT NOW</BannerButton>
-    </BannerContainer>
-  )
 
   renderEmptyView = () => {
     const onRetry = () => {
@@ -232,7 +200,6 @@ class Home extends Component {
         {isEmpty
           ? this.renderEmptyView()
           : videosList.map(item => {
-              const timeDiff = formatDistanceToNow(new Date(item.publishedAt))
               const {id} = item
               return (
                 <Link className="link-txt" to={`/videos/${id}`}>
@@ -243,15 +210,10 @@ class Home extends Component {
                         alt="video thumbnail"
                       />
                       <VideoDetails>
-                        <VideoChannelLogo
-                          src={item.channel.profile_image_url}
-                          alt="channel logo"
-                        />
                         <VideoContentDetails>
                           <p className="p">{item.title}</p>
-                          <p className="p">{item.channel.name}</p>
                           <p className="p">
-                            {item.viewCount} views {timeDiff} ago
+                            {item.viewCount} Watching Worldwide
                           </p>
                         </VideoContentDetails>
                       </VideoDetails>
@@ -278,36 +240,16 @@ class Home extends Component {
     }
   }
 
-  onSearchInput = event => {
-    this.setState({searchInput: event.target.value})
-  }
-
-  onClickSearchIcon = () => {
-    const {searchInput} = this.state
-    this.setState({searchInput}, this.renderTrendingVideos)
-  }
-
   render() {
-    const {showBanner} = this.state
     return (
       <div className="home-bg-container">
         <Header />
         <ContentDiv>
           {this.renderSideBar()}
           <ViewContainer>
-            {showBanner && this.renderBannerView()}
-            <div className="search-div">
-              <input
-                type="text"
-                className="input-search"
-                placeholder="Search"
-                onChange={this.onSearchInput}
-              />
-              <FaSearch
-                className="search-icon"
-                onClick={this.onClickSearchIcon}
-              />
-            </div>
+            <GamingLogoContainer>
+              <SiYoutubegaming className="fire-icon" /> Gaming
+            </GamingLogoContainer>
             {this.renderApiData()}
           </ViewContainer>
         </ContentDiv>
@@ -316,4 +258,4 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default Gaming

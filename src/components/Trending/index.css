@@ -71,5 +71,8 @@
 }
 .link-txt {
   text-decoration: none;
-  color: 231f20;
+  color: #231f20;
+}
+.fire-icon{
+    color:red;
 }

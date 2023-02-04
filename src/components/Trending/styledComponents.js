@@ -26,12 +26,14 @@ export const ContactDiv = styled.div`
   align-items: flex-start;
 `
 export const VideoUL = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
+  background-color: #f4f4f4;
+  width: 70%;
 `
 export const VideoLI = styled.li`
   list-style: none;
-  width: 300px;
+  width: 100%;
+  display: flex;
+  margin-bottom: 10px;
 `
 export const BannerContainer = styled.div`
   background-image: url('https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png');
@@ -97,5 +99,16 @@ export const LoaderContainer = styled.div`
   align-items: center;
 `
 export const VideoListContainer = styled.div`
+  display: flex;
   padding: 2px;
+`
+export const TrendingLogoContainer = styled.p`
+  background-color: #f4f4f4;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  color: #231f20;
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
 `

@@ -2,10 +2,9 @@ import {Component} from 'react'
 import Cookies from 'js-cookie'
 
 import {Link} from 'react-router-dom'
-import {formatDistanceToNow} from 'date-fns'
-
+import ReactPlayer from 'react-player'
 import Loader from 'react-loader-spinner'
-import {FaHome, FaFire, FaWindowClose, FaSearch} from 'react-icons/fa'
+import {FaHome, FaFire} from 'react-icons/fa'
 import {SiYoutubegaming} from 'react-icons/si'
 import {CgPlayListAdd} from 'react-icons/cg'
 import {
@@ -15,11 +14,7 @@ import {
   ContactDiv,
   VideoUL,
   VideoLI,
-  BannerContainer,
-  BannerButton,
   ContentDiv,
-  DisplayBannerRow,
-  IconButton,
   ViewContainer,
   EmptyView,
   VideoThumbnail,
@@ -28,6 +23,7 @@ import {
   VideoContentDetails,
   LoaderContainer,
   VideoListContainer,
+  GamingLogoContainer,
 } from './styledComponents'
 
 import Header from '../Header'
@@ -66,11 +62,9 @@ const apiStatusConstant = {
   success: 'SUCCESS',
   fail: 'FAIL',
 }
-class Home extends Component {
+class VideoItemDetails extends Component {
   state = {
-    videosList: [],
-    showBanner: true,
-    searchInput: '',
+    videoInfo: {},
     apiStatus: apiStatusConstant.initial,
   }
 
@@ -119,8 +113,11 @@ class Home extends Component {
   )
 
   renderTrendingVideos = async () => {
+    const {match} = this.props
+    const {params} = match
+    const {id} = params
+
     this.setState({apiStatus: apiStatusConstant.progress})
-    const {searchInput} = this.state
     const jwtToken = Cookies.get('jwt_token')
     const option = {
       headers: {
@@ -128,22 +125,23 @@ class Home extends Component {
       },
       method: 'GET',
     }
-    const response = await fetch(
-      `https://apis.ccbp.in/videos/all?search=${searchInput}`,
-      option,
-    )
+    const response = await fetch(`https://apis.ccbp.in/videos/${id}`, option)
     const data = await response.json()
-    const videosData = data.videos.map(eachItem => ({
-      channel: eachItem.channel,
-      id: eachItem.id,
-      publishedAt: eachItem.published_at,
-      thumbnailUrl: eachItem.thumbnail_url,
-      title: eachItem.title,
-      viewCount: eachItem.view_count,
-    }))
+    console.log(data)
+    const videosData = data.video_details
+    const formattedData = {
+        channel:videosData.channel,
+        description:videosData.description,
+        id:videosData.id,
+        publishedAt:videosData.published_at,
+        thumbnailUrl:videosData.thumbnail_url,
+        title:videosData.title,
+        viewCount:videosData.view_count,
+        videoUrl:videosData.video_url,
+    }
     if (response.ok === true) {
       this.setState({
-        videosList: videosData,
+        videoInfo: formattedData,
         apiStatus: apiStatusConstant.success,
       })
     } else if (data.status === 400) {
@@ -174,49 +172,7 @@ class Home extends Component {
     )
   }
 
-  onCloseBanner = () => {
-    this.setState({showBanner: false})
-  }
 
-  renderBannerView = () => (
-    <BannerContainer>
-      <DisplayBannerRow>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-          alt="theme"
-          className="logo"
-        />
-        <IconButton type="button" onClick={this.onCloseBanner}>
-          <FaWindowClose />
-        </IconButton>
-      </DisplayBannerRow>
-      <p>Buy Nxt Watch Premium prepaid plans with UPI </p>
-      <BannerButton type="button">GET IT NOW</BannerButton>
-    </BannerContainer>
-  )
-
-  renderEmptyView = () => {
-    const onRetry = () => {
-      this.setState(
-        {apiStatus: apiStatusConstant.progress},
-        this.renderTrendingVideos,
-      )
-    }
-    return (
-      <EmptyView>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-          alt="no videos"
-          className="empty-logo"
-        />
-        <h1>No Search results found </h1>
-        <p>Try different keywords or remove search filter</p>
-        <button type="button" onClick={onRetry} className="retry-btn">
-          Retry
-        </button>
-      </EmptyView>
-    )
-  }
 
   renderLoader = () => (
     <LoaderContainer data-testid="loader">
@@ -224,45 +180,27 @@ class Home extends Component {
     </LoaderContainer>
   )
 
+  renderVideoPlayer=()=>{
+      const {videoInfo} = this.state
+      const {id,description,thumbnailUrl,videoUrl,title,publishedAt,channel,viewCount} = videoInfo
+      return(
+          <div>
+              <ReactPlayer url={videoUrl} width={80} height={80} controls/>
+          </div>
+      )
+  }
+
   renderSuccessView = () => {
-    const {videosList} = this.state
+    const {videoInfo} = this.state
     const isEmpty = videosList.length === 0
     return (
-      <VideoUL>
+      <VideoWatchContainer>
         {isEmpty
           ? this.renderEmptyView()
-          : videosList.map(item => {
-              const timeDiff = formatDistanceToNow(new Date(item.publishedAt))
-              const {id} = item
-              return (
-                <Link className="link-txt" to={`/videos/${id}`}>
-                  <VideoLI key={item.id}>
-                    <VideoListContainer>
-                      <VideoThumbnail
-                        src={item.thumbnailUrl}
-                        alt="video thumbnail"
-                      />
-                      <VideoDetails>
-                        <VideoChannelLogo
-                          src={item.channel.profile_image_url}
-                          alt="channel logo"
-                        />
-                        <VideoContentDetails>
-                          <p className="p">{item.title}</p>
-                          <p className="p">{item.channel.name}</p>
-                          <p className="p">
-                            {item.viewCount} views {timeDiff} ago
-                          </p>
-                        </VideoContentDetails>
-                      </VideoDetails>
-                    </VideoListContainer>
-                  </VideoLI>
-                </Link>
-              )
-            })}
-      </VideoUL>
+          : this.renderVideoPlayer()
+        }
     )
-  }
+    }
 
   renderApiData = () => {
     const {apiStatus} = this.state
@@ -278,42 +216,17 @@ class Home extends Component {
     }
   }
 
-  onSearchInput = event => {
-    this.setState({searchInput: event.target.value})
-  }
-
-  onClickSearchIcon = () => {
-    const {searchInput} = this.state
-    this.setState({searchInput}, this.renderTrendingVideos)
-  }
-
   render() {
-    const {showBanner} = this.state
     return (
       <div className="home-bg-container">
         <Header />
         <ContentDiv>
           {this.renderSideBar()}
-          <ViewContainer>
-            {showBanner && this.renderBannerView()}
-            <div className="search-div">
-              <input
-                type="text"
-                className="input-search"
-                placeholder="Search"
-                onChange={this.onSearchInput}
-              />
-              <FaSearch
-                className="search-icon"
-                onClick={this.onClickSearchIcon}
-              />
-            </div>
-            {this.renderApiData()}
-          </ViewContainer>
+          <ViewContainer>{this.renderApiData()}</ViewContainer>
         </ContentDiv>
       </div>
     )
   }
 }
 
-export default Home
+export default VideoItemDetails
