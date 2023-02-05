@@ -64,7 +64,7 @@ export const IconButton = styled.button`
   cursor: pointer;
 `
 export const ViewContainer = styled.div`
-  width: 80vw;
+  width: 50vw;
 `
 export const EmptyView = styled.div`
   padding: 20px;
@@ -74,7 +74,7 @@ export const EmptyView = styled.div`
   align-items: center;
 `
 export const VideoThumbnail = styled.img`
-  height: 300px;
+  height: 150px;
   width: 280px;
   margin-right: 5px;
 `
@@ -98,37 +98,4 @@ export const LoaderContainer = styled.div`
 `
 export const VideoListContainer = styled.div`
   padding: 2px;
-`
-export const GamingLogoContainer = styled.p`
-  background-color: #f4f4f4;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 10px;
-  color: #231f20;
-  font-weight: bold;
-  font-size: 30px;
-  text-align: center;
-`
-export const DislikeButton = styled.button`
-  background-color: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: ${props => props.color};
-`
-
-export const LikeButton = styled.button`
-  background-color: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: ${props => props.color};
-`
-export const horizontalLine = styled.hr`
-  display: block;
-  border-width: 2px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-right: auto;
-  margin-left: auto;
 `

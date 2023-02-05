@@ -1,15 +1,24 @@
 .profile-logo {
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
 }
 .theme-logo {
-  width: 120px;
+  width: 100px;
 }
 .icons-header {
-  font-size: 30px;
+  font-size: 25px;
 }
 .icons-container {
   display: flex;
   justify-content: space-between;
-  width: 25%;
+  width: 15%;
+}
+.icon-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.icons-light-header{
+    font-size: 25px;
+    color:white;
 }

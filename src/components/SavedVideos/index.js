@@ -66,12 +66,10 @@ const apiStatusConstant = {
   success: 'SUCCESS',
   fail: 'FAIL',
 }
-class VideoItemDetails extends Component {
+class SavedVideos extends Component {
   state = {
-    videoInfo: {},
+    savedVideosList: [],
     apiStatus: apiStatusConstant.initial,
-    isLikeClicked: false,
-    isDislikeClicked: false,
   }
 
   componentDidMount() {
@@ -165,15 +163,12 @@ class VideoItemDetails extends Component {
     return (
       <EmptyView>
         <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-          alt="no videos"
+          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-saved-videos-img.png"
+          alt="no saved videos"
           className="empty-logo"
         />
-        <h1>No Search results found </h1>
-        <p>Try different keywords or remove search filter</p>
-        <button type="button" onClick={onRetry} className="retry-btn">
-          Retry
-        </button>
+        <h1>No saved videos found </h1>
+        <p>You can save your videos while watching them</p>
       </EmptyView>
     )
   }
@@ -184,38 +179,10 @@ class VideoItemDetails extends Component {
     </LoaderContainer>
   )
 
-  onLike = () => {
-    const {isDislikeClicked} = this.state
-    if (isDislikeClicked === true) {
-      this.setState(prevState => ({
-        isLikeClicked: !prevState.isLikeClicked,
-        isDislikeClicked: false,
-      }))
-    } else {
-      this.setState(prevState => ({
-        isLikeClicked: !prevState.isLikeClicked,
-      }))
-    }
-  }
 
-  onDislike = () => {
-    const {isLikeClicked} = this.state
-    if (isLikeClicked === true) {
-      this.setState(prevState => ({
-        isDislikeClicked: !prevState.isDislikeClicked,
-        isLikeClicked: false,
-      }))
-    } else {
-      this.setState(prevState => ({
-        isDislikeClicked: !prevState.isDislikeClicked,
-      }))
-    }
-  }
 
   renderSuccessView = () => {
-    const {videoInfo, isLikeClicked, isDislikeClicked} = this.state
-    const likeColor = isLikeClicked ? '#3b82f6' : '#212121'
-    const dislikeColor = isDislikeClicked ? '#ff0000' : '#212121'
+    const {savedVideosList} = this.state
     const {
       id,
       description,
@@ -225,47 +192,10 @@ class VideoItemDetails extends Component {
       title,
       viewCount,
       channel,
-    } = videoInfo
-    const timeDiff = formatDistanceToNow(new Date(publishedAt))
-
+    } = savedVideosList
+    
     return (
-      <div>
-        <ReactPlayer url={videoUrl} width={900} height={500} controls />
-        <p>{title}</p>
-        <div className="flex">
-          <p className="video-player-count">
-            {viewCount} views. {timeDiff} ago
-          </p>
-          <div>
-            <LikeButton type="button" onClick={this.onLike} color={likeColor}>
-              <BiLike /> Like
-            </LikeButton>
-            <DislikeButton
-              type="button"
-              onClick={this.onDislike}
-              color={dislikeColor}
-            >
-              <BiDislike /> Dislike
-            </DislikeButton>
-            <button type="button" className="btn">
-              <CgPlayListAdd /> Save
-            </button>
-          </div>
-        </div>
-        <hr width={1000} />
-        <div className="flex-ns">
-          <img
-            src={channel.profile_image_url}
-            alt="channel logo"
-            className="channel-logo"
-          />
-          <div>
-            <p className="channel-name">{channel.name}</p>
-            <p className="sub-count">{channel.subscriber_count} subscribers</p>
-          </div>
-        </div>
-        <p>{description}</p>
-      </div>
+      
     )
   }
 
@@ -296,4 +226,4 @@ class VideoItemDetails extends Component {
   }
 }
 
-export default VideoItemDetails
+export default SavedVideos
