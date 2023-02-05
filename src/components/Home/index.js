@@ -8,6 +8,7 @@ import Loader from 'react-loader-spinner'
 import {FaHome, FaFire, FaWindowClose, FaSearch} from 'react-icons/fa'
 import {SiYoutubegaming} from 'react-icons/si'
 import {CgPlayListAdd} from 'react-icons/cg'
+import ThemeContext from '../../context/ThemeContext'
 import {
   UnOrListContainer,
   SideBar,
@@ -28,6 +29,7 @@ import {
   VideoContentDetails,
   LoaderContainer,
   VideoListContainer,
+  TitleText,
 } from './styledComponents'
 
 import Header from '../Header'
@@ -78,45 +80,49 @@ class Home extends Component {
     this.renderTrendingVideos()
   }
 
-  renderSideBar = () => (
-    <SideBar>
-      <nav>
-        <UnOrListContainer>
-          {sideBarData.map(item => (
-            <Link className="link-txt" to={item.link}>
-              <ListItems key={item.id}>
-                <span className="icon-prop">{item.icon}</span>
-                <p className="link-text">{item.text}</p>
-              </ListItems>
-            </Link>
-          ))}
-        </UnOrListContainer>
-      </nav>
-      <ContactDiv>
-        <h1 className="con-hea">CONTACT US</h1>
-        <div className="contact-logo-container">
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
-            alt="facebook logo"
-            className="contact-logo"
-          />
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
-            alt="twitter logo"
-            className="contact-logo"
-          />
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
-            alt="linked in logo"
-            className="contact-logo"
-          />
-        </div>
-        <p className="con-par">
-          Enjoy! Now to see your channels and recommendations!
-        </p>
-      </ContactDiv>
-    </SideBar>
-  )
+  renderSideBar = isNightModeOn => {
+    const bgColor = isNightModeOn && '#383838'
+    const fontColor = isNightModeOn && 'white'
+    return (
+      <SideBar bgColor={bgColor} fontColor={fontColor}>
+        <nav>
+          <UnOrListContainer>
+            {sideBarData.map(item => (
+              <Link className="link-txt" to={item.link}>
+                <ListItems key={item.id} fontColor={fontColor}>
+                  <span className="icon-prop">{item.icon}</span>
+                  <p className="link-text">{item.text}</p>
+                </ListItems>
+              </Link>
+            ))}
+          </UnOrListContainer>
+        </nav>
+        <ContactDiv fontColor={fontColor}>
+          <h1 className="con-hea">CONTACT US</h1>
+          <div className="contact-logo-container">
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
+              alt="facebook logo"
+              className="contact-logo"
+            />
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
+              alt="twitter logo"
+              className="contact-logo"
+            />
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
+              alt="linked in logo"
+              className="contact-logo"
+            />
+          </div>
+          <p className="con-par">
+            Enjoy! Now to see your channels and recommendations!
+          </p>
+        </ContactDiv>
+      </SideBar>
+    )
+  }
 
   renderTrendingVideos = async () => {
     this.setState({apiStatus: apiStatusConstant.progress})
@@ -224,11 +230,13 @@ class Home extends Component {
     </LoaderContainer>
   )
 
-  renderSuccessView = () => {
+  renderSuccessView = isNightModeOn => {
+    const bgColor = isNightModeOn && '#313131'
+    const fontColor = isNightModeOn ? 'dark' : 'light'
     const {videosList} = this.state
     const isEmpty = videosList.length === 0
     return (
-      <VideoUL>
+      <VideoUL bgColor={bgColor}>
         {isEmpty
           ? this.renderEmptyView()
           : videosList.map(item => {
@@ -248,7 +256,7 @@ class Home extends Component {
                           alt="channel logo"
                         />
                         <VideoContentDetails>
-                          <p className="p">{item.title}</p>
+                          <p className={fontColor}>{item.title}</p>
                           <p className="p">{item.channel.name}</p>
                           <p className="p">
                             {item.viewCount} views {timeDiff} ago
@@ -290,28 +298,40 @@ class Home extends Component {
   render() {
     const {showBanner} = this.state
     return (
-      <div className="home-bg-container">
-        <Header />
-        <ContentDiv>
-          {this.renderSideBar()}
-          <ViewContainer>
-            {showBanner && this.renderBannerView()}
-            <div className="search-div">
-              <input
-                type="text"
-                className="input-search"
-                placeholder="Search"
-                onChange={this.onSearchInput}
-              />
-              <FaSearch
-                className="search-icon"
-                onClick={this.onClickSearchIcon}
-              />
-            </div>
-            {this.renderApiData()}
-          </ViewContainer>
-        </ContentDiv>
-      </div>
+      <ThemeContext.Consumer>
+        {value => {
+          const {isNightModeOn} = value
+          const bgColor = isNightModeOn ? '#181818' : '#f8fafc'
+          const borderColor = isNightModeOn ? ' #606060' : '#d7dfe9'
+          const color = isNightModeOn ? '#f1f1f1' : '#212121'
+          return (
+            <>
+              <div className="home-bg-container">
+                <Header />
+                <ContentDiv>
+                  {this.renderSideBar(isNightModeOn)}
+                  <ViewContainer bgColor={bgColor}>
+                    {showBanner && this.renderBannerView(isNightModeOn)}
+                    <div className="search-div">
+                      <input
+                        type="text"
+                        className="input-search"
+                        placeholder="Search"
+                        onChange={this.onSearchInput}
+                      />
+                      <FaSearch
+                        className="search-icon"
+                        onClick={this.onClickSearchIcon}
+                      />
+                    </div>
+                    {this.renderApiData(isNightModeOn)}
+                  </ViewContainer>
+                </ContentDiv>
+              </div>
+            </>
+          )
+        }}
+      </ThemeContext.Consumer>
     )
   }
 }

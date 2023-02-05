@@ -9,6 +9,7 @@ import Loader from 'react-loader-spinner'
 import {FaHome, FaFire} from 'react-icons/fa'
 import {SiYoutubegaming} from 'react-icons/si'
 import {CgPlayListAdd} from 'react-icons/cg'
+import ThemeContext from '../../context/ThemeContext'
 import {
   UnOrListContainer,
   SideBar,
@@ -28,6 +29,7 @@ import {
   GamingLogoContainer,
   DislikeButton,
   LikeButton,
+  SaveButton,
 } from './styledComponents'
 
 import Header from '../Header'
@@ -212,10 +214,14 @@ class VideoItemDetails extends Component {
     }
   }
 
-  renderSuccessView = () => {
+  renderSuccessView = (addToSaveList, isNightModeOn, savedVideosList) => {
     const {videoInfo, isLikeClicked, isDislikeClicked} = this.state
     const likeColor = isLikeClicked ? '#3b82f6' : '#212121'
     const dislikeColor = isDislikeClicked ? '#ff0000' : '#212121'
+    const isSave =
+      savedVideosList.filter(eachVideo => eachVideo.id === videoInfo.id)
+        .length !== 0
+
     const {
       id,
       description,
@@ -227,6 +233,11 @@ class VideoItemDetails extends Component {
       channel,
     } = videoInfo
     const timeDiff = formatDistanceToNow(new Date(publishedAt))
+    const onSave = () => {
+      addToSaveList(videoInfo)
+    }
+    const btnText = isSave ? 'Saved' : 'Save'
+    const savedColor = isSave ? '#2563eb' : '#64748b'
 
     return (
       <div>
@@ -247,9 +258,9 @@ class VideoItemDetails extends Component {
             >
               <BiDislike /> Dislike
             </DislikeButton>
-            <button type="button" className="btn">
-              <CgPlayListAdd /> Save
-            </button>
+            <SaveButton type="button" color={savedColor} onClick={onSave}>
+              <CgPlayListAdd /> {btnText}
+            </SaveButton>
           </div>
         </div>
         <hr width={1000} />
@@ -285,13 +296,27 @@ class VideoItemDetails extends Component {
 
   render() {
     return (
-      <div className="home-bg-container">
-        <Header />
-        <ContentDiv>
-          {this.renderSideBar()}
-          <ViewContainer>{this.renderApiData()}</ViewContainer>
-        </ContentDiv>
-      </div>
+      <ThemeContext.Consumer>
+        {value => {
+          const {isNightModeOn, addToSaveList, savedVideosList} = value
+          const bGColor = isNightModeOn ? '#0f0f0f' : '#f8fafc'
+          return (
+            <div className="home-bg-container">
+              <Header />
+              <ContentDiv>
+                {this.renderSideBar()}
+                <ViewContainer bgColor={bGColor}>
+                  {this.renderApiData(
+                    isNightModeOn,
+                    addToSaveList,
+                    savedVideosList,
+                  )}
+                </ViewContainer>
+              </ContentDiv>
+            </div>
+          )
+        }}
+      </ThemeContext.Consumer>
     )
   }
 }

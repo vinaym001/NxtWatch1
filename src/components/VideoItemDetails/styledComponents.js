@@ -132,3 +132,10 @@ export const horizontalLine = styled.hr`
   margin-right: auto;
   margin-left: auto;
 `
+export const SaveButton = styled.button`
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: ${props => props.color};
+`

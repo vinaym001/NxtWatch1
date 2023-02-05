@@ -45,6 +45,7 @@
 }
 .input-search {
   width: 30%;
+  margin-left: 20px;
 }
 .search-icon {
   background-color: #e2e8f0;
@@ -68,8 +69,21 @@
 
 .p {
   margin: 5px;
+  color: #7e858e;
 }
 .link-txt {
   text-decoration: none;
   color: 231f20;
+  font-family: 'roboto';
+  font-size: 15px;
+}
+
+.dark {
+  color: white;
+  margin: 5px;
+}
+
+.light {
+  color: #231f20;
+  margin: 5px;
 }
