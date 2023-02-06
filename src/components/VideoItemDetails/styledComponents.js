@@ -24,6 +24,7 @@ export const ContactDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  background-color: ${props => props.color};
 `
 export const VideoUL = styled.ul`
   display: flex;
@@ -65,6 +66,7 @@ export const IconButton = styled.button`
 `
 export const ViewContainer = styled.div`
   width: 80vw;
+  background-color: ${props => props.color};
 `
 export const EmptyView = styled.div`
   padding: 20px;

@@ -214,30 +214,32 @@ class VideoItemDetails extends Component {
     }
   }
 
-  renderSuccessView = (addToSaveList, isNightModeOn, savedVideosList) => {
+  renderSuccessView = (isNightModeOn, addToSaveList, savedVideosList) => {
     const {videoInfo, isLikeClicked, isDislikeClicked} = this.state
-    const likeColor = isLikeClicked ? '#3b82f6' : '#212121'
-    const dislikeColor = isDislikeClicked ? '#ff0000' : '#212121'
-    const isSave =
-      savedVideosList.filter(eachVideo => eachVideo.id === videoInfo.id)
-        .length !== 0
-
     const {
       id,
       description,
-      thumbnailUrl,
       publishedAt,
       videoUrl,
       title,
       viewCount,
       channel,
     } = videoInfo
-    const timeDiff = formatDistanceToNow(new Date(publishedAt))
+
+    const likeColor = isLikeClicked ? '#3b82f6' : '#212121'
+    const dislikeColor = isDislikeClicked ? '#ff0000' : '#212121'
+    const isSaved =
+      savedVideosList.filter(item => item.id === videoInfo.id).length !== 0
+    const saveBtnText = isSaved ? 'Saved' : 'Save'
+    const saveBtnColor = isSaved && '#2563eb'
+
     const onSave = () => {
       addToSaveList(videoInfo)
     }
-    const btnText = isSave ? 'Saved' : 'Save'
-    const savedColor = isSave ? '#2563eb' : '#64748b'
+    const timeDiff = formatDistanceToNow(new Date(publishedAt))
+    const titleColor = isNightModeOn ? 'white' : '#212121'
+    const textColor = isNightModeOn ? '#94a3b8' : '#64748b'
+    const descColor = isNightModeOn ? 'white' : '#616e7c'
 
     return (
       <div>
@@ -258,8 +260,9 @@ class VideoItemDetails extends Component {
             >
               <BiDislike /> Dislike
             </DislikeButton>
-            <SaveButton type="button" color={savedColor} onClick={onSave}>
-              <CgPlayListAdd /> {btnText}
+            <SaveButton type="button" onClick={onSave} color={saveBtnColor}>
+              <CgPlayListAdd />
+              {saveBtnText}
             </SaveButton>
           </div>
         </div>
@@ -280,7 +283,7 @@ class VideoItemDetails extends Component {
     )
   }
 
-  renderApiData = () => {
+  renderApiData = (isNightModeOn, addToSaveList, savedVideosList) => {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusConstant.progress:
@@ -288,7 +291,11 @@ class VideoItemDetails extends Component {
       case apiStatusConstant.fail:
         return this.renderFailView()
       case apiStatusConstant.success:
-        return this.renderSuccessView()
+        return this.renderSuccessView(
+          isNightModeOn,
+          addToSaveList,
+          savedVideosList,
+        )
       default:
         return null
     }
@@ -299,13 +306,13 @@ class VideoItemDetails extends Component {
       <ThemeContext.Consumer>
         {value => {
           const {isNightModeOn, addToSaveList, savedVideosList} = value
-          const bGColor = isNightModeOn ? '#0f0f0f' : '#f8fafc'
+          const bgColor = isNightModeOn ? '#0f0f0f' : '#f8fafc'
           return (
             <div className="home-bg-container">
               <Header />
-              <ContentDiv>
+              <ContentDiv color={bgColor}>
                 {this.renderSideBar()}
-                <ViewContainer bgColor={bGColor}>
+                <ViewContainer color={bgColor}>
                   {this.renderApiData(
                     isNightModeOn,
                     addToSaveList,

@@ -8,6 +8,7 @@ import Login from './components/Login'
 import Home from './components/Home'
 import Trending from './components/Trending'
 import Gaming from './components/Gaming'
+import SavedVideos from './components/SavedVideos'
 import VideoItemDetails from './components/VideoItemDetails'
 import NotFound from './components/NotFound'
 import ThemeContext from './context/ThemeContext'
@@ -21,19 +22,19 @@ class App extends Component {
     }))
   }
 
-  addToSaveList = videoInfor => {
+  addToSaveList = videoInfo => {
     const {savedVideosList} = this.state
     const isPresent =
-      savedVideosList.filter(item => item.id === videoInfor.id).length !== 0
+      savedVideosList.filter(item => item.id === videoInfo.id).length !== 0
     if (isPresent) {
       this.setState(prevState => ({
         savedVideosList: prevState.savedVideosList.filter(
-          eachItem => eachItem.id !== videoInfor.id,
+          eachItem => eachItem.id !== videoInfo.id,
         ),
       }))
     } else {
       this.setState(prevState => ({
-        savedVideosList: [...prevState.savedVideosList, videoInfor],
+        savedVideosList: [...prevState.savedVideosList, videoInfo],
       }))
     }
   }
@@ -55,6 +56,7 @@ class App extends Component {
           <ProtectedRoute exact path="/" component={Home} />
           <ProtectedRoute exact path="/trending" component={Trending} />
           <ProtectedRoute exact path="/gaming" component={Gaming} />
+          <ProtectedRoute exact path="/saved-videos" component={SavedVideos} />
           <ProtectedRoute
             exact
             path="/videos/:id"
