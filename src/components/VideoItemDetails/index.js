@@ -95,7 +95,7 @@ class VideoItemDetails extends Component {
         </UnOrListContainer>
       </nav>
       <ContactDiv>
-        <h1 className="con-hea">CONTACT US</h1>
+        <p className="con-hea">CONTACT US</p>
         <div className="contact-logo-container">
           <img
             src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
@@ -157,27 +157,27 @@ class VideoItemDetails extends Component {
     }
   }
 
-  renderFailView = () => {
+  renderFailView = isNightModeOn => {
     const onRetry = () => {
       this.setState(
         {apiStatus: apiStatusConstant.progress},
         this.renderTrendingVideos,
       )
+      const url = isNightModeOn
+        ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+        : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
+
+      return (
+        <EmptyView>
+          <img src={url} alt="failure view" className="empty-logo" />
+          <h1>Oops! Something Went Wrong </h1>
+          <p>We are having some trouble to complete your request. Please try again.</p>
+          <button type="button" onClick={onRetry} className="retry-btn">
+            Retry
+          </button>
+        </EmptyView>
+      )
     }
-    return (
-      <EmptyView>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-          alt="no videos"
-          className="empty-logo"
-        />
-        <h1>No Search results found </h1>
-        <p>Try different keywords or remove search filter</p>
-        <button type="button" onClick={onRetry} className="retry-btn">
-          Retry
-        </button>
-      </EmptyView>
-    )
   }
 
   renderLoader = () => (
@@ -226,8 +226,8 @@ class VideoItemDetails extends Component {
       channel,
     } = videoInfo
 
-    const likeColor = isLikeClicked ? '#3b82f6' : '#212121'
-    const dislikeColor = isDislikeClicked ? '#ff0000' : '#212121'
+    const likeColor = isLikeClicked ? '#2563eb' : '#64748b'
+    const dislikeColor = isDislikeClicked ? '"#2563eb"' : '#64748b'
     const isSaved =
       savedVideosList.filter(item => item.id === videoInfo.id).length !== 0
     const saveBtnText = isSaved ? 'Saved' : 'Save'
@@ -260,7 +260,12 @@ class VideoItemDetails extends Component {
             >
               <BiDislike /> Dislike
             </DislikeButton>
-            <SaveButton type="button" onClick={onSave} color={saveBtnColor}>
+            <SaveButton
+              type="button"
+              onClick={onSave}
+              color={saveBtnColor}
+              data-testid="savedVideos"
+            >
               <CgPlayListAdd />
               {saveBtnText}
             </SaveButton>
@@ -289,7 +294,7 @@ class VideoItemDetails extends Component {
       case apiStatusConstant.progress:
         return this.renderLoader()
       case apiStatusConstant.fail:
-        return this.renderFailView()
+        return this.renderFailView(isNightModeOn)
       case apiStatusConstant.success:
         return this.renderSuccessView(
           isNightModeOn,
@@ -311,7 +316,7 @@ class VideoItemDetails extends Component {
             <div className="home-bg-container">
               <Header />
               <ContentDiv color={bgColor}>
-                {this.renderSideBar()}
+                {this.renderSideBar(isNightModeOn)}
                 <ViewContainer color={bgColor}>
                   {this.renderApiData(
                     isNightModeOn,

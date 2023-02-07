@@ -10,7 +10,6 @@ class Login extends Component {
     username: '',
     password: '',
     showPassword: false,
-    isErr: false,
     errMsg: '',
   }
 
@@ -21,7 +20,7 @@ class Login extends Component {
   }
 
   onFailLogin = errrMsg => {
-    this.setState({errMsg: errrMsg, isErr: true})
+    this.setState({errMsg: errrMsg})
   }
 
   onSubmit = async event => {
@@ -56,8 +55,8 @@ class Login extends Component {
   }
 
   render() {
-    const {username, password, showPassword, errMsg, isErr} = this.state
-
+    const {username, password, showPassword, errMsg} = this.state
+    const isError = errMsg !== ''
     const inputType = showPassword ? 'text' : 'password'
     const jwtToken = Cookies.get('jwt_token')
     if (jwtToken !== undefined) {
@@ -100,7 +99,7 @@ class Login extends Component {
             </label>
           </div>
           <FormButton type="submit">Login</FormButton>
-          {isErr && <p className="error-msg">*{errMsg}</p>}
+          {isError && <p className="error-msg">*{errMsg}</p>}
         </form>
       </div>
     )

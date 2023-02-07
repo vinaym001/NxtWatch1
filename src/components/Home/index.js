@@ -98,7 +98,7 @@ class Home extends Component {
           </UnOrListContainer>
         </nav>
         <ContactDiv fontColor={fontColor}>
-          <h1 className="con-hea">CONTACT US</h1>
+          <p className="con-hea">CONTACT US</p>
           <div className="contact-logo-container">
             <img
               src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
@@ -157,49 +157,59 @@ class Home extends Component {
     }
   }
 
-  renderFailView = () => {
+  renderFailView = isNightModeOn => {
     const onRetry = () => {
       this.setState(
         {apiStatus: apiStatusConstant.progress},
         this.renderTrendingVideos,
       )
+      const url = isNightModeOn
+        ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+        : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
+
+      return (
+        <EmptyView>
+          <img src={url} alt="failure view" className="empty-logo" />
+          <h1>Oops! Something Went Wrong </h1>
+          <p>
+            We are having some trouble to complete your request. Please try
+            again.
+          </p>
+          <button type="button" onClick={onRetry} className="retry-btn">
+            Retry
+          </button>
+        </EmptyView>
+      )
     }
-    return (
-      <EmptyView>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-          alt="no videos"
-          className="empty-logo"
-        />
-        <h1>No Search results found </h1>
-        <p>Try different keywords or remove search filter</p>
-        <button type="button" onClick={onRetry} className="retry-btn">
-          Retry
-        </button>
-      </EmptyView>
-    )
   }
 
   onCloseBanner = () => {
     this.setState({showBanner: false})
   }
 
-  renderBannerView = () => (
-    <BannerContainer>
-      <DisplayBannerRow>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-          alt="theme"
-          className="logo"
-        />
-        <IconButton type="button" onClick={this.onCloseBanner}>
-          <FaWindowClose />
-        </IconButton>
-      </DisplayBannerRow>
-      <p>Buy Nxt Watch Premium prepaid plans with UPI </p>
-      <BannerButton type="button">GET IT NOW</BannerButton>
-    </BannerContainer>
-  )
+  renderBannerView = isNightModeOn => {
+    const bannerImg = isNightModeOn
+      ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png'
+      : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png'
+    return (
+      <BannerContainer data-testid="banner">
+        <DisplayBannerRow>
+          <img src={bannerImg} alt="theme" className="nxt watch logo" />
+          <IconButton
+            type="button"
+            onClick={this.onCloseBanner}
+            data-testid="close"
+          >
+            <FaWindowClose />
+          </IconButton>
+        </DisplayBannerRow>
+        <p>
+          Buy Nxt Watch Premium prepaid plans with <br /> UPI
+        </p>
+        <BannerButton type="button">GET IT NOW</BannerButton>
+      </BannerContainer>
+    )
+  }
 
   renderEmptyView = () => {
     const onRetry = () => {
@@ -216,7 +226,7 @@ class Home extends Component {
           className="empty-logo"
         />
         <h1>No Search results found </h1>
-        <p>Try different keywords or remove search filter</p>
+        <p>Try different key words or remove search filter</p>
         <button type="button" onClick={onRetry} className="retry-btn">
           Retry
         </button>
@@ -272,13 +282,13 @@ class Home extends Component {
     )
   }
 
-  renderApiData = () => {
+  renderApiData = isNightModeOn => {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusConstant.progress:
         return this.renderLoader()
       case apiStatusConstant.fail:
-        return this.renderFailView()
+        return this.renderFailView(isNightModeOn)
       case apiStatusConstant.success:
         return this.renderSuccessView()
       default:
@@ -296,7 +306,7 @@ class Home extends Component {
   }
 
   render() {
-    const {showBanner} = this.state
+    const {showBanner, searchInput} = this.state
     return (
       <ThemeContext.Consumer>
         {value => {
@@ -314,7 +324,7 @@ class Home extends Component {
                     {showBanner && this.renderBannerView(isNightModeOn)}
                     <div className="search-div">
                       <input
-                        type="text"
+                        type="search"
                         className="input-search"
                         placeholder="Search"
                         onChange={this.onSearchInput}
@@ -322,6 +332,8 @@ class Home extends Component {
                       <FaSearch
                         className="search-icon"
                         onClick={this.onClickSearchIcon}
+                        data-testid="searchButton"
+                        value={searchInput}
                       />
                     </div>
                     {this.renderApiData(isNightModeOn)}

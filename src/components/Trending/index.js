@@ -88,7 +88,7 @@ class Trending extends Component {
         </UnOrListContainer>
       </nav>
       <ContactDiv>
-        <h1 className="con-hea">CONTACT US</h1>
+        <p className="con-hea">CONTACT US</p>
         <div className="contact-logo-container">
           <img
             src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"

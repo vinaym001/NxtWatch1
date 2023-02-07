@@ -72,45 +72,49 @@ class Gaming extends Component {
     this.renderTrendingVideos()
   }
 
-  renderSideBar = () => (
-    <SideBar>
-      <nav>
-        <UnOrListContainer>
-          {sideBarData.map(item => (
-            <Link className="link-txt" to={item.link}>
-              <ListItems key={item.id}>
-                <span className="icon-prop">{item.icon}</span>
-                <p className="link-text">{item.text}</p>
-              </ListItems>
-            </Link>
-          ))}
-        </UnOrListContainer>
-      </nav>
-      <ContactDiv>
-        <h1 className="con-hea">CONTACT US</h1>
-        <div className="contact-logo-container">
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
-            alt="facebook logo"
-            className="contact-logo"
-          />
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
-            alt="twitter logo"
-            className="contact-logo"
-          />
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
-            alt="linked in logo"
-            className="contact-logo"
-          />
-        </div>
-        <p className="con-par">
-          Enjoy! Now to see your channels and recommendations!
-        </p>
-      </ContactDiv>
-    </SideBar>
-  )
+  renderSideBar = isNightModeOn => {
+    const bgColor = isNightModeOn && '#383838'
+    const fontColor = isNightModeOn && 'white'
+    return (
+      <SideBar bgColor={bgColor} fontColor={fontColor}>
+        <nav>
+          <UnOrListContainer>
+            {sideBarData.map(item => (
+              <Link className="link-txt" to={item.link}>
+                <ListItems key={item.id} fontColor={fontColor}>
+                  <span className="icon-prop">{item.icon}</span>
+                  <p className="link-text">{item.text}</p>
+                </ListItems>
+              </Link>
+            ))}
+          </UnOrListContainer>
+        </nav>
+        <ContactDiv fontColor={fontColor}>
+          <p className="con-hea">CONTACT US</p>
+          <div className="contact-logo-container">
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
+              alt="facebook logo"
+              className="contact-logo"
+            />
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
+              alt="twitter logo"
+              className="contact-logo"
+            />
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
+              alt="linked in logo"
+              className="contact-logo"
+            />
+          </div>
+          <p className="con-par">
+            Enjoy! Now to see your channels and recommendations!
+          </p>
+        </ContactDiv>
+      </SideBar>
+    )
+  }
 
   renderTrendingVideos = async () => {
     this.setState({apiStatus: apiStatusConstant.progress})

@@ -102,7 +102,7 @@ export const VideoListContainer = styled.div`
   display: flex;
   padding: 2px;
 `
-export const TrendingLogoContainer = styled.p`
+export const TrendingLogoContainer = styled.h1`
   background-color: #f4f4f4;
   padding-top: 20px;
   padding-bottom: 20px;

@@ -5,6 +5,8 @@ const ThemeContext = React.createContext({
   changeTheme: () => {},
   savedVideosList: [],
   addToSaveList: () => {},
+  isLogoutClicked: '',
+  onLogoutClicked: () => {},
 })
 
 export default ThemeContext

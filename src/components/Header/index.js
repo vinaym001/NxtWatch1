@@ -38,11 +38,20 @@ const Header = props => (
         <HeaderDiv backgroundColor={bgColorForDiv}>
           <div>
             <Link to="/">
-              <img src={logoImageUrl} alt="theme" className="theme-logo" />
+              <img
+                src={logoImageUrl}
+                alt="website logo"
+                className="theme-logo"
+              />
             </Link>
           </div>
           <div className="icons-container">
-            <button className="icon-btn" onClick={onToggleIcon} type="button">
+            <button
+              className="icon-btn"
+              onClick={onToggleIcon}
+              type="button"
+              data-testid="theme"
+            >
               {icontype}
             </button>
             <img
@@ -65,4 +74,4 @@ const Header = props => (
   </ThemeContext.Consumer>
 )
 
-export default Header
+export default withRouter(Header)
