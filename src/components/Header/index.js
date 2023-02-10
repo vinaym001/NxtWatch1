@@ -79,7 +79,7 @@ const Header = props => (
               {close => (
                 <div className="d-flex">
                   <div>
-                    <p>Are you sure want to logout?</p>
+                    <p>Are you sure you want to logout?</p>
                     <CancelButton
                       type="button"
                       onClick={() => close()}
