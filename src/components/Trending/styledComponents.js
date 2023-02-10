@@ -10,6 +10,8 @@ export const SideBar = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: ${props => props.bgColor};
+  color: ${props => props.fontColor};
 `
 export const ListItems = styled.li`
   list-style: none;
@@ -19,15 +21,18 @@ export const ListItems = styled.li`
   text-decoration: none;
   display: flex;
   align-items: center;
+  color: ${props => props.fontColor};
 `
 export const ContactDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  color: ${props => props.fontColor};
 `
 export const VideoUL = styled.ul`
-  background-color: #f4f4f4;
-  width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: ${props => props.bgColor};
 `
 export const VideoLI = styled.li`
   list-style: none;
@@ -66,6 +71,7 @@ export const IconButton = styled.button`
   cursor: pointer;
 `
 export const ViewContainer = styled.div`
+  background-color: ${props => props.bgColor};
   width: 80vw;
 `
 export const EmptyView = styled.div`
@@ -111,4 +117,13 @@ export const TrendingLogoContainer = styled.h1`
   font-weight: bold;
   font-size: 30px;
   text-align: center;
+`
+export const TitleText = styled.p`
+    color:${props => props.color}
+    margin:5px;
+`
+
+export const TitlePara = styled.p`
+    color:${props => props.color}
+    margin:5px;
 `

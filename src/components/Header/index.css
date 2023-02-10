@@ -27,9 +27,5 @@
   flex-direction: column;
   align-items: center;
   padding: 10px 5px;
-
-}
-
-.pop-up {
-  width: 20%;
+  width: 100%;
 }

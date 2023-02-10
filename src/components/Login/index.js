@@ -13,10 +13,24 @@ class Login extends Component {
     errMsg: '',
   }
 
+  onEnterUserName = event => {
+    this.setState({username: event.target.value})
+  }
+
+  onEnterPassword = event => {
+    this.setState({password: event.target.value})
+  }
+
+  onCheckBox = () => {
+    this.setState(prevState => ({
+      showPassword: !prevState.showPassword,
+    }))
+  }
+
   onSuccessLogin = jwtToken => {
+    Cookies.set('jwt_token', jwtToken, {expires: 30})
     const {history} = this.props
     history.replace('/')
-    Cookies.set('jwt_token', jwtToken, {expires: 30})
   }
 
   onFailLogin = errrMsg => {
@@ -32,26 +46,13 @@ class Login extends Component {
       body: JSON.stringify(userDetails),
     }
     const response = await fetch('https://apis.ccbp.in/login', option)
-    const data = await response.json()
     if (response.ok) {
+      const data = await response.json()
       this.onSuccessLogin(data.jwt_token)
-    } else if (data.status_code === 400) {
+    } else {
+      const data = await response.json()
       this.onFailLogin(data.error_msg)
     }
-  }
-
-  onEnterUserName = event => {
-    this.setState({username: event.target.value})
-  }
-
-  onEnterPassword = event => {
-    this.setState({password: event.target.value})
-  }
-
-  onCheckBox = () => {
-    this.setState(prevState => ({
-      showPassword: !prevState.showPassword,
-    }))
   }
 
   render() {

@@ -10,6 +10,7 @@ export const SideBar = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: ${props => props.bgColor};
   color: ${props => props.fontColor};
 `
 export const ListItems = styled.li`
@@ -113,4 +114,13 @@ export const GamingLogoContainer = styled.h1`
   font-weight: bold;
   font-size: 30px;
   text-align: center;
+`
+export const TitleText = styled.p`
+    color:${props => props.color}
+    margin:5px;
+`
+
+export const TitlePara = styled.p`
+    color:${props => props.color}
+    margin:5px;
 `

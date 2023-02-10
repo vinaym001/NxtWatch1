@@ -24,7 +24,10 @@ import {
   LoaderContainer,
   VideoListContainer,
   GamingLogoContainer,
+  TitleText,
+  TitlePara,
 } from './styledComponents'
+import ThemeContext from '../../context/ThemeContext'
 
 import Header from '../Header'
 import './index.css'
@@ -144,50 +147,30 @@ class Gaming extends Component {
     }
   }
 
-  renderFailView = () => {
+  renderFailView = isNightModeOn => {
     const onRetry = () => {
       this.setState(
         {apiStatus: apiStatusConstant.progress},
         this.renderTrendingVideos,
       )
-    }
-    return (
-      <EmptyView>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-          alt="no videos"
-          className="empty-logo"
-        />
-        <h1>No Search results found </h1>
-        <p>Try different keywords or remove search filter</p>
-        <button type="button" onClick={onRetry} className="retry-btn">
-          Retry
-        </button>
-      </EmptyView>
-    )
-  }
+      const url = isNightModeOn
+        ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+        : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
 
-  renderEmptyView = () => {
-    const onRetry = () => {
-      this.setState(
-        {apiStatus: apiStatusConstant.progress},
-        this.renderTrendingVideos,
+      return (
+        <EmptyView>
+          <img src={url} alt="failure view" className="empty-logo" />
+          <h1>Oops! Something Went Wrong </h1>
+          <p>
+            We are having some trouble to complete your request. Please try
+            again.
+          </p>
+          <button type="button" onClick={onRetry} className="retry-btn">
+            Retry
+          </button>
+        </EmptyView>
       )
     }
-    return (
-      <EmptyView>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-          alt="no videos"
-          className="empty-logo"
-        />
-        <h1>No Search results found </h1>
-        <p>Try different keywords or remove search filter</p>
-        <button type="button" onClick={onRetry} className="retry-btn">
-          Retry
-        </button>
-      </EmptyView>
-    )
   }
 
   renderLoader = () => (
@@ -196,9 +179,12 @@ class Gaming extends Component {
     </LoaderContainer>
   )
 
-  renderSuccessView = () => {
+  renderSuccessView = isNightModeOn => {
     const {videosList} = this.state
     const isEmpty = videosList.length === 0
+    const fontT = isNightModeOn ? '#ffffff' : '#212121'
+    const fontTe = isNightModeOn ? '#94a3b8' : '#64748b'
+    const bgColor = isNightModeOn ? '#181818' : '#f8fafc'
     return (
       <VideoUL>
         {isEmpty
@@ -215,10 +201,12 @@ class Gaming extends Component {
                       />
                       <VideoDetails>
                         <VideoContentDetails>
-                          <p className="p">{item.title}</p>
-                          <p className="p">
+                          <TitleText color={fontT} className="p">
+                            {item.title}
+                          </TitleText>
+                          <TitlePara color={fontTe} className="p">
                             {item.viewCount} Watching Worldwide
-                          </p>
+                          </TitlePara>
                         </VideoContentDetails>
                       </VideoDetails>
                     </VideoListContainer>
@@ -230,15 +218,15 @@ class Gaming extends Component {
     )
   }
 
-  renderApiData = () => {
+  renderApiData = isNightModeOn => {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusConstant.progress:
         return this.renderLoader()
       case apiStatusConstant.fail:
-        return this.renderFailView()
+        return this.renderFailView(isNightModeOn)
       case apiStatusConstant.success:
-        return this.renderSuccessView()
+        return this.renderSuccessView(isNightModeOn)
       default:
         return null
     }
@@ -246,18 +234,30 @@ class Gaming extends Component {
 
   render() {
     return (
-      <div className="home-bg-container">
-        <Header />
-        <ContentDiv>
-          {this.renderSideBar()}
-          <ViewContainer>
-            <GamingLogoContainer>
-              <SiYoutubegaming className="fire-icon" /> Gaming
-            </GamingLogoContainer>
-            {this.renderApiData()}
-          </ViewContainer>
-        </ContentDiv>
-      </div>
+      <ThemeContext>
+        {value => {
+          const {isNightModeOn} = value
+          const bgColor = isNightModeOn ? '#181818' : '#f8fafc'
+          const borderColor = isNightModeOn ? ' #606060' : '#d7dfe9'
+          const color = isNightModeOn ? '#f1f1f1' : '#212121'
+          return (
+            <>
+              <div className="home-bg-container">
+                <Header />
+                <ContentDiv>
+                  {this.renderSideBar(isNightModeOn)}
+                  <ViewContainer bgColor={bgColor}>
+                    <GamingLogoContainer>
+                      <SiYoutubegaming className="fire-icon" /> Gaming
+                    </GamingLogoContainer>
+                    {this.renderApiData(isNightModeOn)}
+                  </ViewContainer>
+                </ContentDiv>
+              </div>
+            </>
+          )
+        }}
+      </ThemeContext>
     )
   }
 }

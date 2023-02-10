@@ -65,7 +65,6 @@ const Header = props => (
             />
             <Popup
               modal
-              className="pop-up"
               trigger={
                 <LogOutButton
                   type="button"
@@ -79,7 +78,7 @@ const Header = props => (
               {close => (
                 <div className="d-flex">
                   <div>
-                    <p>Are you sure you want to logout?</p>
+                    <p>Are you sure, you want to logout?</p>
                     <CancelButton
                       type="button"
                       onClick={() => close()}

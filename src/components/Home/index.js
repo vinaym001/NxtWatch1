@@ -194,7 +194,11 @@ class Home extends Component {
     return (
       <BannerContainer data-testid="banner">
         <DisplayBannerRow>
-          <img src={bannerImg} alt="theme" className="nxt watch logo" />
+          <img
+            src={bannerImg}
+            alt="nxt watch logo"
+            className="nxt watch logo"
+          />
           <IconButton
             type="button"
             onClick={this.onCloseBanner}
@@ -333,6 +337,7 @@ class Home extends Component {
                         className="search-iconb"
                         onClick={this.onClickSearchIcon}
                         type="button"
+                        data-testid="searchButton"
                       >
                         <FaSearch
                           className="search-icon"

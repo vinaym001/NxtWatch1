@@ -52,7 +52,7 @@ class App extends Component {
         }}
       >
         <Switch>
-          <Route path="/login" component={Login} />
+          <Route exact path="/login" component={Login} />
           <ProtectedRoute exact path="/" component={Home} />
           <ProtectedRoute exact path="/trending" component={Trending} />
           <ProtectedRoute exact path="/gaming" component={Gaming} />

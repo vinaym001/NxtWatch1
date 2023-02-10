@@ -25,8 +25,11 @@ import {
   LoaderContainer,
   VideoListContainer,
   TrendingLogoContainer,
+  TitleText,
+  TitlePara,
 } from './styledComponents'
 
+import ThemeContext from '../../context/ThemeContext'
 import Header from '../Header'
 import './index.css'
 
@@ -73,45 +76,49 @@ class Trending extends Component {
     this.renderTrendingVideos()
   }
 
-  renderSideBar = () => (
-    <SideBar>
-      <nav>
-        <UnOrListContainer>
-          {sideBarData.map(item => (
-            <Link className="link-txt" to={item.link}>
-              <ListItems key={item.id}>
-                <span className="icon-prop">{item.icon}</span>
-                <p className="link-text">{item.text}</p>
-              </ListItems>
-            </Link>
-          ))}
-        </UnOrListContainer>
-      </nav>
-      <ContactDiv>
-        <p className="con-hea">CONTACT US</p>
-        <div className="contact-logo-container">
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
-            alt="facebook logo"
-            className="contact-logo"
-          />
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
-            alt="twitter logo"
-            className="contact-logo"
-          />
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
-            alt="linked in logo"
-            className="contact-logo"
-          />
-        </div>
-        <p className="con-par">
-          Enjoy! Now to see your channels and recommendations!
-        </p>
-      </ContactDiv>
-    </SideBar>
-  )
+  renderSideBar = isNightModeOn => {
+    const bgColor = isNightModeOn && '#383838'
+    const fontColor = isNightModeOn && 'white'
+    return (
+      <SideBar bgColor={bgColor} fontColor={fontColor}>
+        <nav>
+          <UnOrListContainer>
+            {sideBarData.map(item => (
+              <Link className="link-txt" to={item.link}>
+                <ListItems key={item.id} fontColor={fontColor}>
+                  <span className="icon-prop">{item.icon}</span>
+                  <p className="link-text">{item.text}</p>
+                </ListItems>
+              </Link>
+            ))}
+          </UnOrListContainer>
+        </nav>
+        <ContactDiv fontColor={fontColor}>
+          <p className="con-hea">CONTACT US</p>
+          <div className="contact-logo-container">
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
+              alt="facebook logo"
+              className="contact-logo"
+            />
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
+              alt="twitter logo"
+              className="contact-logo"
+            />
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
+              alt="linked in logo"
+              className="contact-logo"
+            />
+          </div>
+          <p className="con-par">
+            Enjoy! Now to see your channels and recommendations!
+          </p>
+        </ContactDiv>
+      </SideBar>
+    )
+  }
 
   renderTrendingVideos = async () => {
     this.setState({apiStatus: apiStatusConstant.progress})
@@ -142,50 +149,30 @@ class Trending extends Component {
     }
   }
 
-  renderFailView = () => {
+  renderFailView = isNightModeOn => {
     const onRetry = () => {
       this.setState(
         {apiStatus: apiStatusConstant.progress},
         this.renderTrendingVideos,
       )
-    }
-    return (
-      <EmptyView>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-          alt="no videos"
-          className="empty-logo"
-        />
-        <h1>No Search results found </h1>
-        <p>Try different keywords or remove search filter</p>
-        <button type="button" onClick={onRetry} className="retry-btn">
-          Retry
-        </button>
-      </EmptyView>
-    )
-  }
+      const url = isNightModeOn
+        ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+        : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
 
-  renderEmptyView = () => {
-    const onRetry = () => {
-      this.setState(
-        {apiStatus: apiStatusConstant.progress},
-        this.renderTrendingVideos,
+      return (
+        <EmptyView>
+          <img src={url} alt="failure view" className="empty-logo" />
+          <h1>Oops! Something Went Wrong </h1>
+          <p>
+            We are having some trouble to complete your request. Please try
+            again.
+          </p>
+          <button type="button" onClick={onRetry} className="retry-btn">
+            Retry
+          </button>
+        </EmptyView>
       )
     }
-    return (
-      <EmptyView>
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-          alt="no videos"
-          className="empty-logo"
-        />
-        <h1>No Search results found </h1>
-        <p>Try different keywords or remove search filter</p>
-        <button type="button" onClick={onRetry} className="retry-btn">
-          Retry
-        </button>
-      </EmptyView>
-    )
   }
 
   renderLoader = () => (
@@ -194,11 +181,15 @@ class Trending extends Component {
     </LoaderContainer>
   )
 
-  renderSuccessView = () => {
+  renderSuccessView = isNightModeOn => {
     const {videosList} = this.state
     const isEmpty = videosList.length === 0
+    const fontT = isNightModeOn ? '#ffffff' : '#212121'
+    const fontTe = isNightModeOn ? '#94a3b8' : '#64748b'
+    const bgColor = isNightModeOn ? '#181818' : '#f8fafc'
+
     return (
-      <VideoUL>
+      <VideoUL bgColor={bgColor}>
         {isEmpty
           ? this.renderEmptyView()
           : videosList.map(item => {
@@ -218,8 +209,12 @@ class Trending extends Component {
                           alt="channel logo"
                         />
                         <VideoContentDetails>
-                          <p className="p">{item.title}</p>
-                          <p className="p">{item.channel.name}</p>
+                          <TitleText color={fontT} className="p">
+                            {item.title}
+                          </TitleText>
+                          <TitlePara color={fontTe} className="p">
+                            {item.channel.name}
+                          </TitlePara>
                           <p className="p">
                             {item.viewCount} views {timeDiff} ago
                           </p>
@@ -234,15 +229,15 @@ class Trending extends Component {
     )
   }
 
-  renderApiData = () => {
+  renderApiData = isNightModeOn => {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusConstant.progress:
         return this.renderLoader()
       case apiStatusConstant.fail:
-        return this.renderFailView()
+        return this.renderFailView(isNightModeOn)
       case apiStatusConstant.success:
-        return this.renderSuccessView()
+        return this.renderSuccessView(isNightModeOn)
       default:
         return null
     }
@@ -259,18 +254,30 @@ class Trending extends Component {
 
   render() {
     return (
-      <div className="home-bg-container">
-        <Header />
-        <ContentDiv>
-          {this.renderSideBar()}
-          <ViewContainer>
-            <TrendingLogoContainer>
-              <FaFire className="fire-icon" /> Trending
-            </TrendingLogoContainer>
-            {this.renderApiData()}
-          </ViewContainer>
-        </ContentDiv>
-      </div>
+      <ThemeContext.Consumer>
+        {value => {
+          const {isNightModeOn} = value
+          const bgColor = isNightModeOn ? '#181818' : '#f8fafc'
+          const borderColor = isNightModeOn ? ' #0f0f0f' : '#d7dfe9'
+          const color = isNightModeOn ? '#f1f1f1' : '#212121'
+          return (
+            <>
+              <div className="home-bg-container">
+                <Header />
+                <ContentDiv>
+                  {this.renderSideBar(isNightModeOn)}
+                  <ViewContainer bgColor={bgColor}>
+                    <TrendingLogoContainer>
+                      <FaFire className="fire-icon" /> Trending
+                    </TrendingLogoContainer>
+                    {this.renderApiData(isNightModeOn)}
+                  </ViewContainer>
+                </ContentDiv>
+              </div>
+            </>
+          )
+        }}
+      </ThemeContext.Consumer>
     )
   }
 }
