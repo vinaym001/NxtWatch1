@@ -171,7 +171,10 @@ class VideoItemDetails extends Component {
         <EmptyView>
           <img src={url} alt="failure view" className="empty-logo" />
           <h1>Oops! Something Went Wrong </h1>
-          <p>We are having some trouble to complete your request. Please try again.</p>
+          <p>
+            We are having some trouble to complete your request. Please try
+            again.
+          </p>
           <button type="button" onClick={onRetry} className="retry-btn">
             Retry
           </button>

@@ -12,7 +12,6 @@ import SavedVideos from './components/SavedVideos'
 import VideoItemDetails from './components/VideoItemDetails'
 import NotFound from './components/NotFound'
 import ThemeContext from './context/ThemeContext'
-import ReactPopup from './components/ReactPopup'
 
 class App extends Component {
   state = {isNightModeOn: false, savedVideosList: []}
@@ -63,7 +62,6 @@ class App extends Component {
             path="/videos/:id"
             component={VideoItemDetails}
           />
-          <ReactPopup />
           <Route path="/not-found" component={NotFound} />
           <Redirect to="not-found" />
         </Switch>

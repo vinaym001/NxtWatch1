@@ -18,3 +18,12 @@ export const LogOutButton = styled.button`
   font-family: 'roboto';
   border: ${props => props.btnBorder};
 `
+export const CancelButton = styled.button`
+  background-color: transparent;
+  padding: 10px;
+  color: ${props => props.cancelBtnColor};
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'roboto';
+  border: ${props => props.btnBorder};
+`

@@ -329,12 +329,17 @@ class Home extends Component {
                         placeholder="Search"
                         onChange={this.onSearchInput}
                       />
-                      <FaSearch
-                        className="search-icon"
+                      <button
+                        className="search-iconb"
                         onClick={this.onClickSearchIcon}
-                        data-testid="searchButton"
-                        value={searchInput}
-                      />
+                        type="button"
+                      >
+                        <FaSearch
+                          className="search-icon"
+                          data-testid="searchButton"
+                          value={searchInput}
+                        />
+                      </button>
                     </div>
                     {this.renderApiData(isNightModeOn)}
                   </ViewContainer>
