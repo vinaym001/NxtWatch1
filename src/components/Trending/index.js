@@ -144,7 +144,7 @@ class Trending extends Component {
         videosList: videosData,
         apiStatus: apiStatusConstant.success,
       })
-    } else if (data.status === 400) {
+    } else {
       this.setState({apiStatus: apiStatusConstant.fail})
     }
   }

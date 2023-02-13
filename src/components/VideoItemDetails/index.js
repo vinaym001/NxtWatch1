@@ -152,7 +152,7 @@ class VideoItemDetails extends Component {
         videoInfo: formattedData,
         apiStatus: apiStatusConstant.success,
       })
-    } else if (data.status === 400) {
+    } else {
       this.setState({apiStatus: apiStatusConstant.fail})
     }
   }
