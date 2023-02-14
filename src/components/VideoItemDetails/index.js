@@ -15,8 +15,6 @@ import {
   SideBar,
   ListItems,
   ContactDiv,
-  VideoUL,
-  VideoLI,
   ContentDiv,
   ViewContainer,
   EmptyView,
@@ -163,24 +161,23 @@ class VideoItemDetails extends Component {
         {apiStatus: apiStatusConstant.progress},
         this.renderTrendingVideos,
       )
-      const url = isNightModeOn
-        ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
-        : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
-
-      return (
-        <EmptyView>
-          <img src={url} alt="failure view" className="empty-logo" />
-          <h1>Oops! Something Went Wrong </h1>
-          <p>
-            We are having some trouble to complete your request. Please try
-            again.
-          </p>
-          <button type="button" onClick={onRetry} className="retry-btn">
-            Retry
-          </button>
-        </EmptyView>
-      )
     }
+    const url = isNightModeOn
+      ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+      : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
+
+    return (
+      <EmptyView>
+        <img src={url} alt="failure view" className="empty-logo" />
+        <h1>Oops! Something Went Wrong </h1>
+        <p>
+          We are having some trouble to complete your request. Please try again.
+        </p>
+        <button type="button" onClick={onRetry} className="retry-btn">
+          Retry
+        </button>
+      </EmptyView>
+    )
   }
 
   renderLoader = () => (
