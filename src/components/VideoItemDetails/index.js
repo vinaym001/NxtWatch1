@@ -134,18 +134,18 @@ class VideoItemDetails extends Component {
     const response = await fetch(`https://apis.ccbp.in/videos/${id}`, option)
     const data = await response.json()
     console.log(data)
-    const videosData = data.video_details
-    const formattedData = {
-      channel: videosData.channel,
-      description: videosData.description,
-      id: videosData.id,
-      publishedAt: videosData.published_at,
-      thumbnailUrl: videosData.thumbnail_url,
-      title: videosData.title,
-      viewCount: videosData.view_count,
-      videoUrl: videosData.video_url,
-    }
     if (response.ok === true) {
+      const videosData = data.video_details
+      const formattedData = {
+        channel: videosData.channel,
+        description: videosData.description,
+        id: videosData.id,
+        publishedAt: videosData.published_at,
+        thumbnailUrl: videosData.thumbnail_url,
+        title: videosData.title,
+        viewCount: videosData.view_count,
+        videoUrl: videosData.video_url,
+      }
       this.setState({
         videoInfo: formattedData,
         apiStatus: apiStatusConstant.success,
