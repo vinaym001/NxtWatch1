@@ -127,7 +127,7 @@ class Gaming extends Component {
       },
       method: 'GET',
     }
-    const response = await fetch(`https://apis.ccbp.in/videos/gaming/`, option)
+    const response = await fetch(`https://apis.ccbp.in/videos/gaming`, option)
     const data = await response.json()
     if (response.ok) {
       const videosData = data.videos.map(eachItem => ({
