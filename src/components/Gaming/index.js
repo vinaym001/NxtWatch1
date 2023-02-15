@@ -129,14 +129,13 @@ class Gaming extends Component {
     }
     const response = await fetch(`https://apis.ccbp.in/videos/gaming/`, option)
     const data = await response.json()
-    console.log(data)
-    const videosData = data.videos.map(eachItem => ({
-      id: eachItem.id,
-      thumbnailUrl: eachItem.thumbnail_url,
-      title: eachItem.title,
-      viewCount: eachItem.view_count,
-    }))
-    if (response.ok === true) {
+    if (response.ok) {
+      const videosData = data.videos.map(eachItem => ({
+        id: eachItem.id,
+        thumbnailUrl: eachItem.thumbnail_url,
+        title: eachItem.title,
+        viewCount: eachItem.view_count,
+      }))
       this.setState({
         videosList: videosData,
         apiStatus: apiStatusConstant.success,
