@@ -131,15 +131,15 @@ class Trending extends Component {
     }
     const response = await fetch('https://apis.ccbp.in/videos/trending', option)
     const data = await response.json()
-    const videosData = data.videos.map(eachItem => ({
-      channel: eachItem.channel,
-      id: eachItem.id,
-      publishedAt: eachItem.published_at,
-      thumbnailUrl: eachItem.thumbnail_url,
-      title: eachItem.title,
-      viewCount: eachItem.view_count,
-    }))
     if (response.ok === true) {
+      const videosData = data.videos.map(eachItem => ({
+        channel: eachItem.channel,
+        id: eachItem.id,
+        publishedAt: eachItem.published_at,
+        thumbnailUrl: eachItem.thumbnail_url,
+        title: eachItem.title,
+        viewCount: eachItem.view_count,
+      }))
       this.setState({
         videosList: videosData,
         apiStatus: apiStatusConstant.success,
